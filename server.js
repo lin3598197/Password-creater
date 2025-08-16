@@ -277,7 +277,7 @@ class GameServer {
     }
     
     start(port = 8080) {
-        this.server.listen(port, () => {
+        this.server.listen(port, '0.0.0.0', () => {
             console.log(`🚀 密碼產生器遊戲伺服器啟動於埠口 ${port}`);
             console.log(`WebSocket: ws://localhost:${port}`);
             console.log(`API: http://localhost:${port}/api/stats`);
@@ -285,8 +285,9 @@ class GameServer {
     }
 }
 
-// 啟動伺服器
+// 啟動伺服器 - 支援雲端部署
 const gameServer = new GameServer();
-gameServer.start(8080);
+const PORT = process.env.PORT || 8080;
+gameServer.start(PORT);
 
 export default GameServer;

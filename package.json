@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:github": "vite build --base=/Password-creater/",
     "preview": "vite preview",
     "serve": "vite preview --port 4173",
     "server": "node server.js",

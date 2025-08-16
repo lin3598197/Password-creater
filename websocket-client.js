@@ -1,5 +1,6 @@
 // WebSocket 客戶端管理器
 import LanguageManager from './languages.js';
+import { getServerConfig } from './config.js';
 
 class GameWebSocket {
     constructor(gameInstance) {
@@ -11,6 +12,8 @@ class GameWebSocket {
         this.maxReconnectAttempts = 5;
         this.lang = LanguageManager;
         this.lastStats = null; // 保存最新的統計數據
+        this.serverConfig = getServerConfig();
+        this.currentServerIndex = 0; // 用於嘗試多個伺服器
         
         // 監聽語言變更事件
         window.addEventListener('languageChanged', () => {
@@ -26,8 +29,12 @@ class GameWebSocket {
     
     connect() {
         try {
+            // 獲取 WebSocket URL
+            const wsUrl = this.getWebSocketUrl();
+            console.log('嘗試連接到:', wsUrl);
+            
             // 連接到 WebSocket 伺服器
-            this.ws = new WebSocket('ws://localhost:8080');
+            this.ws = new WebSocket(wsUrl);
             
             this.ws.onopen = () => {
                 console.log('✅ 已連接到遊戲伺服器');
@@ -139,16 +146,71 @@ class GameWebSocket {
         }
     }
     
+    getWebSocketUrl() {
+        // 如果是開發環境或有單一 WebSocket URL
+        if (this.serverConfig.websocket) {
+            return this.serverConfig.websocket;
+        }
+        
+        // 如果有多個 WebSocket 伺服器選項（生產環境）
+        if (this.serverConfig.websockets && Array.isArray(this.serverConfig.websockets)) {
+            const url = this.serverConfig.websockets[this.currentServerIndex];
+            return url;
+        }
+        
+        // 默認回退到本地
+        return 'ws://localhost:8080';
+    }
+    
+    tryNextServer() {
+        if (this.serverConfig.websockets && Array.isArray(this.serverConfig.websockets)) {
+            this.currentServerIndex = (this.currentServerIndex + 1) % this.serverConfig.websockets.length;
+            console.log('嘗試下一個伺服器:', this.getWebSocketUrl());
+            return true;
+        }
+        return false;
+    }
+    
     attemptReconnect() {
         if (this.reconnectAttempts < this.maxReconnectAttempts) {
             this.reconnectAttempts++;
+            
+            // 如果有多個伺服器，嘗試下一個
+            if (this.reconnectAttempts % 2 === 0) {
+                this.tryNextServer();
+            }
+            
             this.showConnectionStatus(this.lang.t('notifications.reconnecting', [this.reconnectAttempts]), 'connecting');
             
             setTimeout(() => {
                 this.connect();
-            }, 3000 * this.reconnectAttempts); // 遞增延遲
+            }, 3000 * Math.min(this.reconnectAttempts, 3)); // 最大延遲 9 秒
         } else {
             this.showConnectionStatus(this.lang.t('connectionStatus.disconnected'), 'disconnected');
+            // 啟用離線模式
+            this.enableOfflineMode();
+        }
+    }
+    
+    enableOfflineMode() {
+        console.log('啟用離線模式');
+        this.showNotification(this.lang.t('notifications.offlineMode'), 'info');
+        
+        // 隱藏全球統計和排行榜
+        const globalStats = document.getElementById('global-stats');
+        if (globalStats) {
+            globalStats.style.display = 'none';
+        }
+        
+        // 顯示離線提示
+        const offlineNotice = document.createElement('div');
+        offlineNotice.id = 'offline-notice';
+        offlineNotice.className = 'offline-notice';
+        offlineNotice.textContent = this.lang.t('notifications.offlineMode');
+        
+        const gameContainer = document.querySelector('.game-container');
+        if (gameContainer && !document.getElementById('offline-notice')) {
+            gameContainer.insertBefore(offlineNotice, gameContainer.firstChild);
         }
     }
     

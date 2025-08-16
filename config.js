@@ -8,6 +8,9 @@ export const CONFIG = {
     
     // 生產環境 - 這些 URL 需要在部署後更新
     production: {
+        // Heroku 部署後的 URL (需要替換)
+        heroku: 'wss://your-app-name.herokuapp.com',
+        
         // Railway 部署後的 URL (需要替換)
         railway: 'wss://your-app-name.up.railway.app',
         
@@ -31,6 +34,7 @@ export function getServerConfig() {
         // 嘗試不同的生產伺服器，按優先級排序
         return {
             websockets: [
+                CONFIG.production.heroku,
                 CONFIG.production.railway,
                 CONFIG.production.render,
                 CONFIG.production.glitch

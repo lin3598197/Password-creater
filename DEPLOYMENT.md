@@ -28,7 +28,28 @@
 
 選擇以下任一雲端服務：
 
-#### 方案 A：Railway（推薦）
+#### 方案 A：Heroku（最穩定）
+
+1. **註冊並部署**
+   ```bash
+   # 1. 安裝 Heroku CLI: https://devcenter.heroku.com/articles/heroku-cli
+   # 2. 登入：heroku login
+   # 3. 創建應用：heroku create password-creator-game-server
+   # 4. 部署：git push heroku main
+   ```
+
+2. **獲取部署 URL**
+   - 部署完成後，你會得到類似：`https://password-creator-game-server.herokuapp.com`
+
+3. **更新配置**
+   ```javascript
+   // 編輯 config.js 檔案，將以下行：
+   heroku: 'wss://your-app-name.herokuapp.com',
+   // 改為你的實際 URL：
+   heroku: 'wss://password-creator-game-server.herokuapp.com',
+   ```
+
+#### 方案 B：Railway（推薦免費選項）
 
 1. **註冊並部署**
    ```bash
@@ -50,7 +71,7 @@
    railway: 'wss://password-creater-production.up.railway.app',
    ```
 
-#### 方案 B：Render
+#### 方案 C：Render
 
 1. **部署步驟**
    ```bash
@@ -71,7 +92,7 @@
    render: 'wss://password-creator-server.onrender.com',
    ```
 
-#### 方案 C：Glitch
+#### 方案 D：Glitch
 
 1. **快速部署**
    ```bash
@@ -147,6 +168,7 @@ export const CONFIG = {
 | 服務 | 成本 | 限制 | 推薦度 |
 |------|------|------|--------|
 | GitHub Pages | 免費 | 靜態檔案 | ⭐⭐⭐⭐⭐ |
+| **Heroku** | **$7/月** | **最穩定，不休眠** | ⭐⭐⭐⭐⭐ |
 | Railway | $5/月免費額度 | 最穩定 | ⭐⭐⭐⭐⭐ |
 | Render | 完全免費 | 15分鐘休眠 | ⭐⭐⭐⭐ |
 | Glitch | 完全免費 | 5分鐘休眠 | ⭐⭐⭐ |

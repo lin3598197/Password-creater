@@ -1,0 +1,24 @@
+{
+  "name": "Password Creator Game Server",
+  "description": "WebSocket server for Password Creator multiplayer game",
+  "repository": "https://github.com/lin3598197/Password-creater",
+  "logo": "https://cdn.iconscout.com/icon/free/png-256/heroku-225989.png",
+  "keywords": ["node", "websocket", "game", "password", "multiplayer"],
+  "env": {
+    "NODE_ENV": {
+      "description": "Node environment",
+      "value": "production"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}

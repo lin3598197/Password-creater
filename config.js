@@ -8,11 +8,14 @@ export const CONFIG = {
     
     // 生產環境 - 這些 URL 需要在部署後更新
     production: {
-        // Heroku 部署後的 URL (需要替換)
-        heroku: 'wss://your-app-name.herokuapp.com',
+        // Azure App Service 部署後的 URL (推薦學生使用)
+        azure: 'wss://password-creator-game.azurewebsites.net',
         
         // Railway 部署後的 URL (需要替換)
         railway: 'wss://your-app-name.up.railway.app',
+        
+        // Heroku 部署後的 URL (需要替換)
+        heroku: 'wss://your-app-name.herokuapp.com',
         
         // Render 部署後的 URL (需要替換)
         render: 'wss://your-app-name.onrender.com',
@@ -34,10 +37,11 @@ export function getServerConfig() {
         // 嘗試不同的生產伺服器，按優先級排序
         return {
             websockets: [
-                CONFIG.production.heroku,
-                CONFIG.production.railway,
-                CONFIG.production.render,
-                CONFIG.production.glitch
+                CONFIG.production.azure,     // Azure - 學生首選，穩定免費
+                CONFIG.production.railway,   // Railway - 免費額度
+                CONFIG.production.heroku,    // Heroku - 穩定但付費
+                CONFIG.production.render,    // Render - 免費但休眠
+                CONFIG.production.glitch     // Glitch - 最後選擇
             ]
         };
     }

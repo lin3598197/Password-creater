@@ -28,28 +28,27 @@
 
 選擇以下任一雲端服務：
 
-#### 方案 A：Heroku（最穩定）
+#### 方案 A：Microsoft Azure（學生首選）
 
-1. **註冊並部署**
+1. **申請 Azure 學生帳戶**
    ```bash
-   # 1. 安裝 Heroku CLI: https://devcenter.heroku.com/articles/heroku-cli
-   # 2. 登入：heroku login
-   # 3. 創建應用：heroku create password-creator-game-server
-   # 4. 部署：git push heroku main
+   # 1. 前往 GitHub Student Pack: https://education.github.com/pack
+   # 2. 申請 Azure for Students ($100 免費額度)
+   # 3. 在 Azure Portal 創建 App Service
+   # 4. 配置 GitHub 自動部署
+   # 詳細步驟請參考：AZURE_DEPLOY.md
    ```
 
 2. **獲取部署 URL**
-   - 部署完成後，你會得到類似：`https://password-creator-game-server.herokuapp.com`
+   - 部署完成後，你會得到：`https://password-creator-game.azurewebsites.net`
 
 3. **更新配置**
    ```javascript
-   // 編輯 config.js 檔案，將以下行：
-   heroku: 'wss://your-app-name.herokuapp.com',
-   // 改為你的實際 URL：
-   heroku: 'wss://password-creator-game-server.herokuapp.com',
+   // config.js 中已預設配置 Azure URL
+   azure: 'wss://password-creator-game.azurewebsites.net',
    ```
 
-#### 方案 B：Railway（推薦免費選項）
+#### 方案 B：Railway（免費額度）
 
 1. **註冊並部署**
    ```bash
@@ -168,8 +167,9 @@ export const CONFIG = {
 | 服務 | 成本 | 限制 | 推薦度 |
 |------|------|------|--------|
 | GitHub Pages | 免費 | 靜態檔案 | ⭐⭐⭐⭐⭐ |
-| **Heroku** | **$7/月** | **最穩定，不休眠** | ⭐⭐⭐⭐⭐ |
+| **Azure (學生)** | **$100 免費額度** | **企業級，無休眠** | ⭐⭐⭐⭐⭐ |
 | Railway | $5/月免費額度 | 最穩定 | ⭐⭐⭐⭐⭐ |
+| **Heroku** | **$7/月** | **最穩定，不休眠** | ⭐⭐⭐⭐⭐ |
 | Render | 完全免費 | 15分鐘休眠 | ⭐⭐⭐⭐ |
 | Glitch | 完全免費 | 5分鐘休眠 | ⭐⭐⭐ |
 

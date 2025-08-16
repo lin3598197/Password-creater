@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>密碼產生器 - Password Creator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 data-translate="gameTitle">🔐 密碼產生器</h1>
+            <p data-translate="gameSubtitle">挑戰你的密碼創造技能！</p>
+            <div class="language-switcher">
+                <button id="language-btn" class="language-btn">English</button>
+            </div>
+        </header>
+
+        <div class="game-area">
+            <!-- 開始畫面 -->
+            <div id="start-screen" class="screen active">
+                <div class="welcome-box">
+                    <h2 data-translate="welcomeTitle">歡迎來到密碼挑戰！</h2>
+                    <div data-translate-html="welcomeDescription" class="welcome-description">
+                        <p>這個遊戲將測試你創建和記住複雜密碼的能力。</p>
+                        <p>隨著關卡進行，密碼要求會越來越複雜，</p>
+                        <p>並且會隨機要求你重新輸入之前設定的密碼！</p>
+                    </div>
+                    
+                    <div class="scoring-info">
+                        <h3 data-translate="scoringTitle">🏆 分數制度</h3>
+                        <ul data-translate-html="scoringRules">
+                            <li>每關完成：<strong>+100分</strong></li>
+                            <li>抽查正確：<strong>+50分</strong></li>
+                            <li>抽查錯誤：<strong>-20分</strong></li>
+                            <li>跳過抽查：<strong>-10分</strong></li>
+                            <li>滿分：<strong>1000分</strong> (10關)</li>
+                        </ul>
+                        <p class="quiz-note" data-translate="quizNote">📝 注意：所有玩家都會在第3、5、7、9關後進行密碼抽查</p>
+                    </div>
+                    
+                    <div class="name-input-section">
+                        <label for="player-name" data-translate="playerNameLabel">請輸入你的名稱：</label>
+                        <input type="text" id="player-name" data-translate-placeholder="playerNamePlaceholder" placeholder="輸入你的遊戲名稱..." maxlength="20">
+                        <div id="name-feedback" class="feedback"></div>
+                    </div>
+                    
+                    <button id="start-btn" class="btn btn-primary" data-translate="startButton">開始遊戲</button>
+                </div>
+            </div>
+
+            <!-- 遊戲畫面 -->
+            <div id="game-screen" class="screen">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                    <span class="level-text"><span data-translate="levelText">關卡</span> <span id="current-level">1</span></span>
+                </div>
+
+                <div class="challenge-box">
+                    <h3 id="challenge-title">關卡 1</h3>
+                    <div id="requirements" class="requirements"></div>
+                    
+                    <div class="input-section">
+                        <label for="password-input" data-translate="passwordInputLabel">請輸入符合要求的密碼：</label>
+                        <div class="password-container">
+                            <input type="password" id="password-input" data-translate-placeholder="passwordInputPlaceholder" placeholder="輸入你的密碼...">
+                            <button type="button" id="toggle-password" class="toggle-btn">👁️</button>
+                        </div>
+                        <div id="password-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="button-group">
+                        <button id="check-btn" class="btn btn-primary" data-translate="checkPasswordButton">檢查密碼</button>
+                    </div>
+                </div>
+
+                <div class="password-history">
+                    <h4 data-translate="passwordHistoryTitle">已設定的密碼：</h4>
+                    <div id="password-list"></div>
+                </div>
+            </div>
+
+            <!-- 抽查畫面 -->
+            <div id="quiz-screen" class="screen">
+                <div class="quiz-box">
+                    <h3 data-translate="quizTitle">🎯 密碼抽查！</h3>
+                    <p id="quiz-question"></p>
+                    
+                    <!-- 抽查關卡的要求提示 -->
+                    <div class="quiz-requirements">
+                        <h4 data-translate="quizRequirementsTitle">該關卡的密碼要求：</h4>
+                        <div id="quiz-requirements-list" class="requirements"></div>
+                    </div>
+                    
+                    <div class="input-section">
+                        <label for="quiz-input" data-translate="quizInputLabel">請輸入該關卡的密碼：</label>
+                        <div class="password-container">
+                            <input type="password" id="quiz-input" data-translate-placeholder="quizInputPlaceholder" placeholder="回憶一下...">
+                            <button type="button" id="quiz-toggle-password" class="toggle-btn">👁️</button>
+                        </div>
+                        <div id="quiz-feedback" class="feedback"></div>
+                    </div>
+                    <div class="button-group">
+                        <button id="quiz-submit-btn" class="btn btn-primary" data-translate="quizSubmitButton">確認</button>
+                        <button id="quiz-skip-btn" class="btn btn-warning" data-translate="quizSkipButton">跳過 (-10分)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 結束畫面 -->
+            <div id="end-screen" class="screen">
+                <div class="result-box">
+                    <h2 id="final-title" data-translate="congratulationsTitle">🎉 恭喜完成！</h2>
+                    <div id="final-score"></div>
+                    <div id="final-stats"></div>
+                    
+                    <!-- 排行榜 -->
+                    <div class="leaderboard">
+                        <h3 data-translate="leaderboardTitle">🏆 排行榜</h3>
+                        <div id="leaderboard-list" class="leaderboard-list">
+                            <!-- 排行榜將在此顯示 -->
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button id="restart-btn" class="btn btn-primary" data-translate="restartButton">再玩一次</button>
+                        <button id="share-btn" class="btn btn-secondary" data-translate="shareButton">分享成績</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="score-panel">
+            <div class="player-info">
+                <div id="player-display" class="player-name" data-translate="playerLabel">玩家</div>
+            </div>
+            
+            <div class="connection-info">
+                <div id="connection-status" class="connection-status connecting" data-translate="connectionStatus.connecting">連接中...</div>
+            </div>
+            
+            <div class="score-item">
+                <span data-translate="scoreLabel">分數</span>
+                <span id="score">0</span>
+            </div>
+            <div class="score-item">
+                <span data-translate="streakLabel">連續成功</span>
+                <span id="streak">0</span>
+            </div>
+            
+            <div id="global-stats" class="global-stats">
+                <!-- 全球統計將在此顯示 -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

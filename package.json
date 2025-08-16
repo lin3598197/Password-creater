@@ -1,0 +1,41 @@
+{
+  "name": "password-creator-game",
+  "version": "1.0.0",
+  "description": "一個具有挑戰性的密碼創建和記憶遊戲，支援多人線上競技和即時排行榜",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "vite preview --port 4173",
+    "server": "node server.js",
+    "dev-full": "concurrently \"npm run server\" \"npm run dev\"",
+    "lint": "eslint . --ext .js,.html --report-unused-disable-directives --max-warnings 0"
+  },
+  "keywords": [
+    "password",
+    "game",
+    "security",
+    "education",
+    "web-game",
+    "websocket",
+    "multiplayer",
+    "leaderboard",
+    "javascript",
+    "vite"
+  ],
+  "author": "Password Creator Game Developer",
+  "license": "MIT",
+  "devDependencies": {
+    "@vitejs/plugin-legacy": "^5.0.0",
+    "concurrently": "^7.6.0",
+    "eslint": "^8.0.0",
+    "express": "^4.21.2",
+    "vite": "^5.0.0",
+    "ws": "^8.18.3"
+  },
+  "dependencies": {
+    "canvas-confetti": "^1.9.2"
+  }
+}

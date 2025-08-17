@@ -3,8 +3,50 @@
 ## 🎓 使用 GitHub Student Pack 免費部署到 Azure
 
 ### 前置準備
+2. **配置 GitHub 部署**
+   ```bash
+   # 配置 GitHub 部署
+   az webapp deployment source config --name password-creator-game --resource-group password-creator-rg --repo-url https://github.com/lin3598197/Password-creater --branch main --manual-integration
+   ```
 
-1. **申請 Azure 學生帳戶**
+---
+
+## 📋 部署類型選擇指南
+
+### ✅ 選擇「代碼 (Code)」的原因：
+
+1. **適合 Node.js 應用**
+   - Azure 原生支援 Node.js
+   - 自動檢測 `package.json`
+   - 自動運行 `npm install`
+
+2. **簡化部署流程**
+   - 直接從 GitHub 部署源碼
+   - 無需 Docker 知識
+   - Azure 自動構建和運行
+
+3. **成本效益**
+   - Free F1 計畫支援代碼部署
+   - 無需額外的容器註冊表
+
+4. **維護簡單**
+   - Azure 自動管理 Node.js 運行時
+   - 自動安全更新
+
+### ❌ 何時選擇「容器 (Container)」：
+
+1. **複雜應用需求**
+   - 需要特定的系統依賴
+   - 自定義環境配置
+   - 微服務架構
+
+2. **已有 Docker 經驗**
+   - 團隊熟悉 Docker
+   - 已有容器化流程
+
+3. **多環境一致性**
+   - 需要完全相同的運行環境
+   - 複雜的依賴關係*申請 Azure 學生帳戶**
    ```bash
    # 1. 前往 GitHub Student Pack: https://education.github.com/pack
    # 2. 找到 "Microsoft Azure" 並點擊獲取
@@ -20,6 +62,37 @@
 
 ## 🚀 部署步驟
 
+### ⚡ 快速選擇指南
+
+**在創建 App Service 時，請選擇：**
+- ✅ **Publish**: `Code`（代碼）
+- ✅ **Runtime stack**: `Node.js 18 LTS`
+- ✅ **Operating System**: `Linux`
+
+**為什麼這樣選擇？**
+- 🎯 最適合你的 Node.js WebSocket 應用
+- 💰 成本最低（Free F1 支援）
+- 🔧 設置最簡單
+- 🚀 部署最快速
+
+### 📊 部署流程圖
+
+```
+GitHub Repository (你的代碼)
+         ↓
+Azure App Service (Code 部署)
+         ↓
+自動檢測 package.json
+         ↓
+自動運行 npm install
+         ↓
+自動運行 npm start (server.js)
+         ↓
+🎉 WebSocket 服務器運行成功！
+```
+
+---
+
 ### 方法 1：Azure Portal 部署（推薦）
 
 1. **創建 App Service**
@@ -31,9 +104,11 @@
    #    - Subscription: Azure for Students
    #    - Resource Group: 創建新的 "password-creator-rg"
    #    - Name: password-creator-game（必須全球唯一）
-   #    - Runtime: Node.js 18 LTS
+   #    - Publish: Code（選擇代碼而不是 Docker Container）
+   #    - Runtime stack: Node.js 18 LTS
+   #    - Operating System: Linux（推薦）
    #    - Region: East US（或距離你最近的）
-   #    - Pricing Plan: Free F1
+   #    - Pricing Plan: Free F1（學生免費）
    ```
 
 2. **設置 GitHub 部署**
@@ -208,6 +283,26 @@ az appservice plan update --name password-creator-plan --resource-group password
    # Azure 自動提供 HTTPS
    # 你的 WebSocket URL 應該使用 wss:// 而不是 ws://
    ```
+
+### 🤔 常見問題 FAQ
+
+**Q: 為什麼選擇代碼而不是容器？**
+A: 對於你的 Node.js 應用，代碼部署更簡單、更便宜、更快速。Azure 會自動處理所有配置。
+
+**Q: 可以之後改成容器部署嗎？**
+A: 可以，但需要重新創建 App Service。不過對於這個專案，代碼部署已經足夠。
+
+**Q: Linux 還是 Windows？**
+A: 推薦 Linux，因為：
+- 成本更低
+- 性能更好
+- Node.js 原生支援更佳
+
+**Q: 部署失敗怎麼辦？**
+A: 檢查以下項目：
+- 確認選擇了 "Code" 而不是 "Container"
+- 確認 Runtime 是 "Node.js 18 LTS"
+- 檢查 package.json 中有 "start" 腳本
 
 ---
 

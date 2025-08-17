@@ -9,7 +9,7 @@ export const CONFIG = {
     // 生產環境 - 這些 URL 需要在部署後更新
     production: {
         // Azure App Service 部署後的 URL (推薦學生使用)
-        azure: 'wss://password-creator-game.azurewebsites.net',
+        azure: 'wss://password-creater-game-dhefa2f2ecfmbaah.eastasia-01.azurewebsites.net',
         
         // Railway 部署後的 URL (需要替換)
         railway: 'wss://your-app-name.up.railway.app',
@@ -30,6 +30,13 @@ export function getServerConfig() {
     // 如果是 localhost，使用開發環境
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         return CONFIG.development;
+    }
+    
+    // 如果是 Azure App Service
+    if (window.location.hostname.includes('azurewebsites.net')) {
+        return {
+            websocket: CONFIG.production.azure
+        };
     }
     
     // 如果是 GitHub Pages，嘗試連接到生產伺服器

@@ -558,7 +558,13 @@ class PasswordGame {
                     
                     if (shouldQuiz) {
                         this.completedQuizzes.add(this.currentLevel);
+                        // 通知伺服器關卡完成（在觸發抽查前）
+                        if (this.isOnlineMode && this.websocket) {
+                            this.websocket.sendLevelComplete(this.currentLevel, this.score);
+                        }
                         this.triggerQuiz();
+                        // 抽查狀態由 triggerQuiz() 管理，不在這裡重置
+                        return;
                     } else {
                         // 通知伺服器關卡完成
                         if (this.isOnlineMode && this.websocket) {
@@ -567,7 +573,7 @@ class PasswordGame {
                         this.loadLevel(this.currentLevel + 1);
                     }
                 }
-                // 重新啟用輸入
+                // 重新啟用輸入（只有非抽查情況）
                 this.setInputsEnabled(true);
                 this.isProcessing = false;
             }, 1500);
@@ -581,15 +587,36 @@ class PasswordGame {
     }
     
     triggerQuiz() {
-        if (Object.keys(this.passwords).length === 0 || this.isProcessing) return;
+        if (Object.keys(this.passwords).length === 0) {
+            return;
+        }
         
-        // 隨機選擇一個已設定的密碼關卡
-        const availableLevels = Object.keys(this.passwords);
-        this.quizLevel = parseInt(availableLevels[Math.floor(Math.random() * availableLevels.length)]);
+        if (this.isProcessing) {
+            this.isProcessing = false;
+        }
+        
+        // 隨機選擇一個已設定的密碼關卡（排除當前關卡）
+        const availableLevels = Object.keys(this.passwords)
+            .map(level => parseInt(level))
+            .filter(level => level < this.currentLevel); // 只選擇已完成的關卡
+        
+        if (availableLevels.length === 0) {
+            // 如果沒有可抽查的關卡，直接進入下一關
+            this.loadLevel(this.currentLevel + 1);
+            return;
+        }
+        
+        this.quizLevel = availableLevels[Math.floor(Math.random() * availableLevels.length)];
         
         // 獲取該關卡的配置
         const levelRequirements = this.getLevelRequirements();
         const levelConfig = levelRequirements[this.quizLevel];
+        
+        if (!levelConfig) {
+            // 如果配置不存在，直接進入下一關
+            this.loadLevel(this.currentLevel + 1);
+            return;
+        }
         
         const questionText = this.lang.getCurrentLanguage() === 'zh' 
             ? `請輸入關卡 ${this.quizLevel} (${levelConfig.title}) 時設定的密碼`
@@ -689,17 +716,19 @@ class PasswordGame {
     }
     
     checkPasswordSimilarity(newPassword) {
-        const previousPasswords = Object.values(this.passwords);
+        // 獲取其他關卡的密碼（排除當前關卡）
+        const otherPasswords = Object.entries(this.passwords)
+            .filter(([level, password]) => parseInt(level) !== this.currentLevel)
+            .map(([level, password]) => ({ level: parseInt(level), password }));
         
-        for (let i = 0; i < previousPasswords.length; i++) {
-            const oldPassword = previousPasswords[i];
+        for (let i = 0; i < otherPasswords.length; i++) {
+            const { level, password: oldPassword } = otherPasswords[i];
             const similarity = this.calculatePasswordSimilarity(newPassword, oldPassword);
             
             if (similarity > 0.6) { // 如果相似度超過60%
-                const levelNum = Object.keys(this.passwords)[i];
                 return {
                     isValid: false,
-                    message: `密碼與關卡 ${levelNum} 的密碼過於相似 (${Math.round(similarity * 100)}%)`
+                    message: `密碼與關卡 ${level} 的密碼過於相似 (${Math.round(similarity * 100)}%)`
                 };
             }
         }

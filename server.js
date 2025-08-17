@@ -2,6 +2,11 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import express from 'express';
 import http from 'http';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class GameServer {
     constructor() {
@@ -66,6 +71,15 @@ class GameServer {
     }
     
     setupRoutes() {
+        // 提供靜態檔案服務
+        this.app.use(express.static(__dirname));
+        
+        // 根路由 - 提供 index.html
+        this.app.get('/', (req, res) => {
+            res.sendFile(path.join(__dirname, 'index.html'));
+        });
+        
+        // API 路由
         this.app.get('/api/stats', (req, res) => {
             res.json(this.globalStats);
         });
@@ -82,6 +96,15 @@ class GameServer {
                 }));
             
             res.json(leaderboard);
+        });
+        
+        // 健康檢查路由
+        this.app.get('/health', (req, res) => {
+            res.json({ 
+                status: 'healthy', 
+                timestamp: new Date().toISOString(),
+                players: this.players.size 
+            });
         });
     }
     

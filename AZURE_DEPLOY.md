@@ -66,7 +66,7 @@
 
 **在創建 App Service 時，請選擇：**
 - ✅ **Publish**: `Code`（代碼）
-- ✅ **Runtime stack**: `Node.js 18 LTS`
+- ✅ **Runtime stack**: `Node.js 20 LTS`（或 Node.js 22 LTS）
 - ✅ **Operating System**: `Linux`
 
 **為什麼這樣選擇？**
@@ -74,6 +74,7 @@
 - 💰 成本最低（Free F1 支援）
 - 🔧 設置最簡單
 - 🚀 部署最快速
+- ⚡ Node.js 20/22 性能更好，更安全
 
 ### 📊 部署流程圖
 
@@ -105,7 +106,7 @@ Azure App Service (Code 部署)
    #    - Resource Group: 創建新的 "password-creator-rg"
    #    - Name: password-creator-game（必須全球唯一）
    #    - Publish: Code（選擇代碼而不是 Docker Container）
-   #    - Runtime stack: Node.js 18 LTS
+   #    - Runtime stack: Node.js 20 LTS（推薦）或 Node.js 22 LTS
    #    - Operating System: Linux（推薦）
    #    - Region: East US（或距離你最近的）
    #    - Pricing Plan: Free F1（學生免費）
@@ -151,7 +152,7 @@ Azure App Service (Code 部署)
    az appservice plan create --name password-creator-plan --resource-group password-creator-rg --sku FREE --is-linux
    
    # 創建 Web App
-   az webapp create --resource-group password-creator-rg --plan password-creator-plan --name password-creator-game --runtime "NODE:18-lts"
+   az webapp create --resource-group password-creator-rg --plan password-creator-plan --name password-creator-game --runtime "NODE:20-lts"
    ```
 
 3. **配置 GitHub 部署**
@@ -173,7 +174,7 @@ Azure App Service (Code 部署)
 
 ```bash
 NODE_ENV = production
-WEBSITE_NODE_DEFAULT_VERSION = 18-lts
+WEBSITE_NODE_DEFAULT_VERSION = 20-lts
 SCM_DO_BUILD_DURING_DEPLOYMENT = true
 PORT = 8080
 ```
@@ -298,10 +299,16 @@ A: 推薦 Linux，因為：
 - 性能更好
 - Node.js 原生支援更佳
 
+**Q: Node.js 20 vs 22，選哪個？**
+A: 都可以！推薦：
+- Node.js 20 LTS：長期支援版，最穩定
+- Node.js 22 LTS：最新功能，性能更好
+- 你的應用在兩個版本都能完美運行
+
 **Q: 部署失敗怎麼辦？**
 A: 檢查以下項目：
 - 確認選擇了 "Code" 而不是 "Container"
-- 確認 Runtime 是 "Node.js 18 LTS"
+- 確認 Runtime 是 "Node.js 20 LTS" 或 "Node.js 22 LTS"
 - 檢查 package.json 中有 "start" 腳本
 
 ---
@@ -329,3 +336,25 @@ A: 檢查以下項目：
 5. **享受穩定的 WebSocket 服務！**
 
 **Azure 是學生的最佳選擇 - 免費、穩定、專業！** 🎓
+
+---
+
+## 🎯 Node.js 版本更新總結
+
+**好消息！Azure 提供 Node.js 20 和 22，都比 18 更好！**
+
+### 版本選擇建議：
+
+| 版本 | 特點 | 推薦度 |
+|------|------|--------|
+| **Node.js 20 LTS** | ✅ 長期支援，最穩定，企業首選 | ⭐⭐⭐⭐⭐ |
+| **Node.js 22 LTS** | ✅ 最新功能，性能提升 | ⭐⭐⭐⭐⭐ |
+
+### 🚀 配置要點：
+
+**在 Azure Portal 創建時選擇：**
+- ✅ **Publish**: `Code`
+- ✅ **Runtime stack**: `Node.js 20 LTS`（推薦）或 `Node.js 22 LTS`
+- ✅ **Operating System**: `Linux`
+
+**你的密碼產生器完全支援這兩個版本！** 性能更好、安全性更高！ 🔥

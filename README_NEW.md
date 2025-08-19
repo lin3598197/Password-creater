@@ -13,7 +13,7 @@ A challenging password creation and memory game with multiplayer online competit
 #### Core Gameplay
 - **10 Progressive Levels**: From simple length requirements to complex special character combinations
 - **Fixed Quiz System**: Password memory tests after levels 3, 5, 7, and 9
-- **Unified Scoring System**: All players compete under the same standards, max score 1200
+- **Unified Scoring System**: All players compete under the same standards, max score 1000
 - **Password Similarity Check**: Prevents players from using overly similar passwords
 - **Multilingual Support**: Chinese and English interface
 
@@ -36,11 +36,9 @@ A challenging password creation and memory game with multiplayer online competit
 | Quiz Correct | +50 points |
 | Quiz Wrong | -20 points |
 | Skip Quiz | -10 points |
-| **Total Max** | **1200 points** |
+| **Total Max** | **1000 points** |
 
 **Quiz Schedule**: All players will have password memory quizzes after completing levels 3, 5, 7, and 9
-
-**Score Breakdown**: 10 levels (1000 pts) + 4 quizzes (200 pts) = 1200 points maximum
 
 ### 🚀 Quick Start
 
@@ -186,7 +184,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 #### 核心玩法
 - **10個漸進式關卡**：從簡單的長度要求到複雜的特殊字符組合
 - **固定抽查系統**：在第3、5、7、9關後進行密碼記憶測試
-- **統一分數制度**：所有玩家在相同標準下競爭，滿分1200分
+- **統一分數制度**：所有玩家在相同標準下競爭，滿分1000分
 - **密碼相似度檢查**：防止玩家使用過於相似的密碼
 - **多語言支援**：中文和英文介面
 
@@ -209,11 +207,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 | 抽查正確 | +50分 |
 | 抽查錯誤 | -20分 |
 | 跳過抽查 | -10分 |
-| **總滿分** | **1200分** |
+| **總滿分** | **1000分** |
 
 **抽查時機**：所有玩家都會在第3、5、7、9關完成後進行密碼記憶抽查
-
-**分數計算**：10關基礎分 (1000分) + 4次抽查 (200分) = 最高1200分
 
 ### 🚀 快速開始
 

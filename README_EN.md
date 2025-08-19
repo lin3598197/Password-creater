@@ -7,7 +7,7 @@ A challenging password creation and memory game with multiplayer online competit
 ### Core Gameplay
 - **10 Progressive Levels**: From simple length requirements to complex special character combinations
 - **Fixed Quiz System**: Password memory tests after levels 3, 5, 7, and 9
-- **Unified Scoring System**: All players compete under the same standards, max score 1000
+- **Unified Scoring System**: All players compete under the same standards, max score 1200
 - **Password Similarity Check**: Prevents players from using overly similar passwords
 - **Multilingual Support**: Chinese and English interface
 
@@ -30,9 +30,11 @@ A challenging password creation and memory game with multiplayer online competit
 | Quiz Correct | +50 points |
 | Quiz Wrong | -20 points |
 | Skip Quiz | -10 points |
-| **Total Max** | **1000 points** |
+| **Total Max** | **1200 points** |
 
 **Quiz Schedule**: All players will have password memory quizzes after completing levels 3, 5, 7, and 9
+
+**Score Breakdown**: 10 levels (1000 pts) + 4 quizzes (200 pts) = 1200 points maximum
 
 ## 🚀 Quick Start
 
